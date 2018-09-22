@@ -1,7 +1,5 @@
-
 package ex0001;
 
-import java.util.Date;
 
 /**
  *
@@ -9,9 +7,17 @@ import java.util.Date;
  */
 public class WetterWert
 {
+
     private int temperatur;
     private int luftfeuchtigkeit;
-    private Date zeitpunkt;
+    private String zeitpunkt;
+
+    public WetterWert(int temperatur, int luftfeuchtigkeit, String zeitpunkt)
+    {
+        this.temperatur = temperatur;
+        this.luftfeuchtigkeit = luftfeuchtigkeit;
+        this.zeitpunkt = zeitpunkt;
+    }
 
     public int getTemperatur()
     {
@@ -33,16 +39,14 @@ public class WetterWert
         this.luftfeuchtigkeit = luftfeuchtigkeit;
     }
 
-    public Date getZeitpunkt()
+    public String getZeitpunkt()
     {
         return zeitpunkt;
     }
 
-    public void setZeitpunkt(Date zeitpunkt)
+    public void setZeitpunkt(String zeitpunkt)
     {
         this.zeitpunkt = zeitpunkt;
     }
-    
-    
-    
+
 }
