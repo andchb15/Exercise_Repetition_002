@@ -1,5 +1,11 @@
 package ex0001;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.swing.AbstractListModel;
 
@@ -10,7 +16,7 @@ import javax.swing.AbstractListModel;
 public class WetterModell extends AbstractListModel
 {
 
-    private ArrayList<WetterWert> liste = new ArrayList();
+    private final ArrayList<WetterWert> liste = new ArrayList();
 
     public void add(WetterWert w)
     {
@@ -40,13 +46,33 @@ public class WetterModell extends AbstractListModel
 
     }
 
-    public void save()
+    public void save(File datei) throws FileNotFoundException
     {
+        try (PrintWriter printWriter = new PrintWriter(datei))
+        {
+            for (WetterWert ww : liste)
+            {
+                printWriter.print(ww.getZeitpunkt() + ";");
+                printWriter.print(ww.getTemperatur() + ";");
+                printWriter.println(ww.getLuftfeuchtigkeit() + ";");
+            }
+        }
 
     }
 
-    public void load()
+    public void load(File datei) throws FileNotFoundException, IOException
     {
+        FileReader fReader = new FileReader(datei);
+        BufferedReader bReader = new BufferedReader(fReader);
+        String line = "";
+
+        while ((line = bReader.readLine()) != null)
+        {
+            String[] s = line.split(";");
+            add(new WetterWert(Integer.parseInt(s[1]), Integer.parseInt(s[2]), s[0]));
+        }
+        bReader.close();
+        fReader.close();
 
     }
 

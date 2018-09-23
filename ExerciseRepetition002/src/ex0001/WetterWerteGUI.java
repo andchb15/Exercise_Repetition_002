@@ -1,7 +1,13 @@
 package ex0001;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import javax.swing.JFileChooser;
+import static javax.swing.JFileChooser.APPROVE_OPTION;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -11,7 +17,7 @@ public class WetterWerteGUI extends javax.swing.JFrame
 {
 
     private WetterModell inv = new WetterModell();
-    
+
     public WetterWerteGUI()
     {
         initComponents();
@@ -167,12 +173,41 @@ public class WetterWerteGUI extends javax.swing.JFrame
 
     private void onSave(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onSave
     {//GEN-HEADEREND:event_onSave
-        
+        JFileChooser jfChooser = new JFileChooser();
+        int ok = jfChooser.showSaveDialog(this);
+        if (ok == APPROVE_OPTION)
+        {
+            File datei = jfChooser.getSelectedFile();
+            try
+            {
+                inv.save(datei);
+            } catch (FileNotFoundException ex)
+            {
+                JOptionPane.showMessageDialog(null, "Fehler beim Speichern" + ex.getMessage());
+            }
+
+        }
     }//GEN-LAST:event_onSave
 
     private void onLoad(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onLoad
     {//GEN-HEADEREND:event_onLoad
-        
+        JFileChooser jfChooser = new JFileChooser();
+        int i = jfChooser.showOpenDialog(this);
+        if (i == APPROVE_OPTION)
+        {
+            try
+            {
+                File datei = jfChooser.getSelectedFile();
+
+                inv.load(datei);
+                listeAnzeige.setListData(inv.getWetter());
+            } catch (IOException ex)
+            {
+                JOptionPane.showMessageDialog(null, "Fehler beim Laden" + ex.getMessage());
+            }
+        }
+
+
     }//GEN-LAST:event_onLoad
 
     private void onEinfuegen(java.awt.event.ActionEvent evt)//GEN-FIRST:event_onEinfuegen
@@ -185,7 +220,7 @@ public class WetterWerteGUI extends javax.swing.JFrame
         WetterWert w = new WetterWert(temperaturValue, luftfeuchtigkeitValue, aktuellesDatum);
         inv.add(w);
         listeAnzeige.setListData(inv.getWetter());
-        
+
     }//GEN-LAST:event_onEinfuegen
 
     /**
